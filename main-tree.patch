@@ -1,0 +1,42 @@
+From: Hugo Lefeuvre <hugo.lefeuvre@neclab.eu>
+Subject: Add TLSF entry to the menuconfig and initialize it
+diff --git a/lib/ukboot/Config.uk b/lib/ukboot/Config.uk
+index a888bc1c..b79b370e 100644
+--- a/lib/ukboot/Config.uk
++++ b/lib/ukboot/Config.uk
+@@ -32,6 +32,13 @@ if LIBUKBOOT
+ 		  Satisfy allocation as fast as possible. No support for free().
+ 		  Refer to help in ukallocregion for more information.
+ 
++		config LIBUKBOOT_INITTLSF
++		bool "TLSF"
++		select LIBTLSF
++		help
++		  Real-time allocator. Bounded fragmentation, allocation, and
++		  deallocation.
++
+ 		config LIBUKBOOT_NOALLOC
+ 		bool "No memory allocator"
+ 
+diff --git a/lib/ukboot/boot.c b/lib/ukboot/boot.c
+index 4e749aa5..37aafd70 100644
+--- a/lib/ukboot/boot.c
++++ b/lib/ukboot/boot.c
+@@ -45,6 +45,8 @@
+ #include <uk/allocbbuddy.h>
+ #elif CONFIG_LIBUKBOOT_INITREGION
+ #include <uk/allocregion.h>
++#elif CONFIG_LIBUKBOOT_INITTLSF
++#include <uk/tlsf.h>
+ #endif
+ #if CONFIG_LIBUKSCHED
+ #include <uk/sched.h>
+@@ -233,6 +235,8 @@ void ukplat_entry(int argc, char *argv[])
+ 			a = uk_allocbbuddy_init(md.base, md.len);
+ #elif CONFIG_LIBUKBOOT_INITREGION
+ 			a = uk_allocregion_init(md.base, md.len);
++#elif CONFIG_LIBUKBOOT_INITTLSF
++			a = uk_tlsf_init(md.base, md.len);
+ #endif
+ 		} else {
+ 			uk_alloc_addmem(a, md.base, md.len);
