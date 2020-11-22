@@ -1,3 +1,9 @@
+# Invisible option that is used to detect
+# if LIBTLSF is available for configuration
+config LIBTLSF_INCLUDED
+	   bool
+	   default y
+
 menuconfig LIBTLSF
 	   bool "TLSF - real-time dynamic memory allocator"
 	   select LIBUKALLOC_IFMALLOC
