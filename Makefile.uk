@@ -64,7 +64,7 @@ CINCLUDES-$(CONFIG_LIBTLSF) +=	-I$(LIBTLSF_BASE)		\
 ################################################################################
 
 # no locks, no sbrk, no mmap
-CFLAGS-$(CONFIG_LIBTLSF) +=  -DTLSF_USE_LOCKS=0 -DUSE_MMAP=0 -DUSE_SBRK=0
+CFLAGS-$(CONFIG_LIBTLSF) +=  -DTLSF_USE_LOCKS=0 -DUSE_MMAP=0 -DUSE_SBRK=0 -DUSE_PRINTF=0
 
 ################################################################################
 # Glue code
