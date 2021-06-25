@@ -32,6 +32,7 @@
 
 #include <uk/tlsf.h>
 #include <uk/alloc_impl.h>
+#include <stdint.h> /* uintptr_t */
 #include <tlsf.h>
 
 /* malloc interface */
@@ -71,7 +72,8 @@ struct uk_alloc *uk_tlsf_init(void *base, size_t len)
 	if (res == (size_t)-1)
 		return NULL;
 
-	uk_alloc_init_malloc_ifmalloc(a, uk_tlsf_malloc, uk_tlsf_free, NULL);
+	uk_alloc_init_malloc_ifmalloc(a, uk_tlsf_malloc, uk_tlsf_free,
+		NULL /* maxalloc */, NULL /* availmem */, NULL /* addmem */);
 
 	return a;
 }
