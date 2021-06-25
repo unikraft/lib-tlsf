@@ -34,6 +34,7 @@
 #define __LIBTLSF_H__
 
 #include <uk/alloc.h>
+#include <stddef.h> /* `NULL` and `size_t` */
 
 #ifdef __cplusplus
 extern "C" {
