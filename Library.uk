@@ -1,0 +1,5 @@
+name        := "tlsf"
+description := "A general purpose dynamic memory allocator specifically designed to meet real-time requirements."
+homepage    := "http://www.gii.upv.es/tlsf/"
+license     := "LGPL-2.0"
+version     := 2.4.6 sha256:43fa1f8e468d39723616b2954dc35c4cc7860fcb05565906fbe6887423a18c74 https://web.archive.org/web/20190717034200if_/http://wks.gii.upv.es:80/tlsf/files/src/TLSF-2.4.6.tbz2
