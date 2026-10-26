@@ -50,6 +50,21 @@ static void uk_tlsf_free(struct uk_alloc *a, void *ptr)
 
 /* initialization */
 
+/* lib/ukboot passes the first free memory region to uk_tlsf_init() and every
+ * further region to uk_alloc_addmem(). TLSF 2.4.6 can grow its pool with
+ * add_new_area(), which returns the usable size of the added area or 0.
+ */
+static int uk_tlsf_addmem(struct uk_alloc *a, void *base, __sz size)
+{
+	if (unlikely(!base || !size))
+		return -EINVAL;
+	/* The pool follows struct uk_alloc, as in uk_tlsf_init() */
+	if (!add_new_area(base, size,
+			  (void *)((uintptr_t)a + sizeof(struct uk_alloc))))
+		return -ENOMEM;
+	return 0;
+}
+
 struct uk_alloc *uk_tlsf_init(void *base, size_t len)
 {
 	struct uk_alloc *a;
@@ -73,7 +88,7 @@ struct uk_alloc *uk_tlsf_init(void *base, size_t len)
 		return NULL;
 
 	uk_alloc_init_malloc_ifmalloc(a, uk_tlsf_malloc, uk_tlsf_free,
-		NULL /* maxalloc */, NULL /* availmem */, NULL /* addmem */);
+		NULL /* maxalloc */, NULL /* availmem */, uk_tlsf_addmem);
 
 	return a;
 }
